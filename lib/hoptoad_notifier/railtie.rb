@@ -9,6 +9,7 @@ module HoptoadNotifier
 
     initializer "hoptoad.use_rack_middleware" do |app|
       app.config.middleware.use "HoptoadNotifier::Rack"
+      app.config.middleware.insert_before "ActionDispatch::ShowExceptions", HoptoadNotifier::UserInformer
     end
 
     config.after_initialize do
@@ -22,7 +23,7 @@ module HoptoadNotifier
       if defined?(::ActionController::Base)
         require 'hoptoad_notifier/rails/javascript_notifier'
         require 'hoptoad_notifier/rails/controller_methods'
-        
+
         ::ActionController::Base.send(:include, HoptoadNotifier::Rails::ControllerMethods)
         ::ActionController::Base.send(:include, HoptoadNotifier::Rails::JavascriptNotifier)
       end

@@ -43,8 +43,11 @@ module HoptoadNotifier
       case response
       when Net::HTTPSuccess then
         log :info, "Success: #{response.class}", response
+        match = response.body.match(/<error-id[^>]*>(\d+)<\/error-id>/)
+        match[1] if match
       else
         log :error, "Failure: #{response.class}", response
+        nil
       end
     end
 

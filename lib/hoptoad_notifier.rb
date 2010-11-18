@@ -123,6 +123,7 @@ module HoptoadNotifier
     private
 
     def send_notice(notice)
+      puts "Public: #{configuration.public?.to_s}"
       if configuration.public?
         sender.send_to_hoptoad(notice.to_xml)
       end
